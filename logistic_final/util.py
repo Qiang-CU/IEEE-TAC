@@ -120,11 +120,13 @@ class plot_figure(object):
 
         num_points = int(1e3)
         log_indices = np.logspace(0, np.log10(len(xvals) - 1), num=num_points).astype(int)
-        sample_iter = np.array(xvals)[log_indices]
+        # sample_iter = np.array(xvals)[log_indices]
+        sample_iter = np.array(xvals)
         res = []
         for f in files:
             data = np.array(f.item().get(self.metric))
-            res.append(data[log_indices])
+            # res.append(data[log_indices])
+            res.append(data)
         res = np.array(res)
         return len(file), res, sample_iter
 

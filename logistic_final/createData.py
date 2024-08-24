@@ -14,7 +14,7 @@ class CreateData(object):
 
     def generate_theta_ture(self):
         theta_true = []
-        l = np.linspace(-5, 5, self.num_agent+1) 
+        l = np.linspace(-1, 1, self.num_agent+1) 
         for c_r in range(self.num_agent):
             theta_true.append(np.random.uniform(l[c_r], l[c_r+1], self.dim))
         return theta_true
@@ -24,7 +24,7 @@ class CreateData(object):
         all_feature = []
         all_label = []
         for i in range(self.num_agent):
-            feature = np.random.uniform(-10, 10, (self.num_local_data, self.dim))
+            feature = np.random.uniform(-5, 5, (self.num_local_data, self.dim))
             label = (np.sign(np.dot(feature, self.theta_true[i])+self.bias[i]) + 1)/2
             label = [int(x) for x in label]
             all_feature.append(feature)

@@ -18,7 +18,7 @@ from util import creat_mixing_matrix,compute_spectral_gap
 
 num_agent = 30
 graph = 'RingGraph'
-W = creat_mixing_matrix(num_agent, graph, self_weight=0.5)
+W = creat_mixing_matrix(num_agent, graph, self_weight=0.8)
 print(f'spectral gap of  {graph} is ', compute_spectral_gap(W))
 
 # 保存mixing matrix矩阵到子文件夹

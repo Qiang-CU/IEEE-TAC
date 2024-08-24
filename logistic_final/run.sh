@@ -11,6 +11,6 @@ mpirun -np 5 python CSGD.py
 
 # Set mixing matrix
 python DSGD_pre.py
-
+ 
 # Run DSGD
 mpirun -np 30 python DSGD.py

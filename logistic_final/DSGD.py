@@ -12,7 +12,7 @@ from util import creat_mixing_matrix, create_sampling_time, compute_spectral_gap
 
 class DSGD(object):
     
-    def __init__(self, problem, algo_type, graph_type, num_agent, logMaxIter, data_dir, save_dir, log_scale=True, batch=5):
+    def __init__(self, problem, algo_type, graph_type, num_agent, logMaxIter, data_dir, save_dir, log_scale=False, batch=5):
         self.problem = problem
         self.dim = problem.dim
         self.sample_time = create_sampling_time(logMaxIter, log_scale = log_scale)
@@ -35,7 +35,7 @@ class DSGD(object):
         self.communicator = DecentralizedAggregation(neighbour_dict)
         
         # 
-        self.theta = np.random.random(self.dim + 1, ) * 0
+        self.theta = np.ones(self.dim + 1, ) * 0.2
         self.metric = {'iter': [], 'mse': [], 'wmse': []}
 
         self.theta_opt = self.load_optsol()
@@ -78,8 +78,8 @@ class DSGD(object):
         self.metric['wmse'].append(wmse)
     
     def stepsize(self, t):
-        a0 = 1e2
-        a1 = 1e4
+        a0 = 5 #50 #1e2
+        a1 = 50 #1e4
         return a0 / (a1 + t)
         
     def save(self, rep):        
@@ -137,8 +137,8 @@ if __name__ == "__main__":
 
     for rep in range(num_trails):
 
-        hete_dsgd = DSGD(problem, algo_type='hete', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=10, data_dir = 'data/')
+        hete_dsgd = DSGD(problem, algo_type='hete', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=16, data_dir = 'data/', log_scale=True)
         hete_dsgd.fit(rep=rep)
 
-        homo_dsgd = DSGD(problem, algo_type='homo', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=10, data_dir = 'data/')
-        homo_dsgd.fit(rep=rep)
+        # homo_dsgd = DSGD(problem, algo_type='homo', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=16, data_dir = 'data/')
+        # homo_dsgd.fit(rep=rep)
