@@ -99,7 +99,11 @@ class DSGD(object):
         elif self.algo_type == 'hete':
 
             idx = np.random.choice(self.problem.local_num_sample, self.batch, replace=False)
+
+            print(f'rank id {self.rank}, len of data sample {self.problem.local_feature.shape}, {self.problem.local_num_sample}')
             return self.problem.local_feature[idx], self.problem.local_label[idx]
+        else:
+            return None
     
     def fit(self, rep):
         
@@ -116,9 +120,43 @@ class DSGD(object):
             if self.rank == 0 and t % 100 == 0:
                 print(f'Decentralized SGD-{self.algo_type}: Iter Percentage {t/self.maxIter:.0%}, MSE: {self.metric["mse"][-1]:.3e}, Worst MSE: {self.metric["wmse"][-1]:.3e}')
                 sys.stdout.flush()  # 强制刷新缓冲区
+            
+            exit(0)
                 
         if self.rank == self.root_rank:
             self.save(rep)
+
+
+# 测试 sample 方法
+def debug_sample(dsgd):
+    print("开始调试 sample 方法...")
+
+    # 调试 homogeneous 情况
+    if dsgd.algo_type == 'homo':
+        print("调试 homogeneous 情况:")
+        X, Y = dsgd.sample()
+        assert X.shape[0] == dsgd.batch, "错误：返回的样本数量不等于 batch 大小"
+        assert Y.shape[0] == dsgd.batch, "错误：返回的标签数量不等于 batch 大小"
+        print("Homogeneous 数据采样成功！")
+        print(f"X shape: {X.shape}, Y shape: {Y.shape}")
+        print(f"采样的 X 数据: {X}")
+        print(f"采样的 Y 标签: {Y}")
+    
+    # 调试 heterogeneous 情况
+    elif dsgd.algo_type == 'hete':
+        print("调试 heterogeneous 情况:")
+        X, Y = dsgd.sample()
+        assert X.shape[0] == dsgd.batch, "错误：返回的样本数量不等于 batch 大小"
+        assert Y.shape[0] == dsgd.batch, "错误：返回的标签数量不等于 batch 大小"
+        print("Heterogeneous 数据采样成功！")
+        print(f"X shape: {X.shape}, Y shape: {Y.shape}")
+        print(f"采样的 X 数据: {X}")
+        print(f"采样的 Y 标签: {Y}")
+    
+    else:
+        print("未识别的 algo_type!")
+    
+    print("sample 方法调试完成。")
 
 
 
@@ -134,11 +172,9 @@ if __name__ == "__main__":
 
     problem = LogisticMin(num_agent=num_agent, data_dir='data/')
 
+    hete_dsgd = DSGD(problem, algo_type='hete', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=16, data_dir = 'data/', log_scale=True)
+    hete_dsgd.fit(rep=0)
 
-    for rep in range(num_trails):
 
-        # hete_dsgd = DSGD(problem, algo_type='hete', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=16, data_dir = 'data/', log_scale=True)
-        # hete_dsgd.fit(rep=rep)
 
-        homo_dsgd = DSGD(problem, algo_type='homo', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=16, data_dir = 'data/', log_scale=True)
-        homo_dsgd.fit(rep=rep)
+
