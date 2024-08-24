@@ -14,7 +14,7 @@ class CreateData(object):
 
     def generate_theta_ture(self):
         theta_true = []
-        l = np.linspace(-10, 10, self.num_agent+1) 
+        l = np.linspace(-5, 5, self.num_agent+1) 
         for c_r in range(self.num_agent):
             theta_true.append(np.random.uniform(l[c_r], l[c_r+1], self.dim))
         return theta_true

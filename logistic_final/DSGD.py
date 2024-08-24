@@ -124,7 +124,7 @@ class DSGD(object):
 
 if __name__ == "__main__":
     """
-        mpirun -np 20 python DSGD.py
+        mpirun -np 30 python DSGD.py
         mpiexec --allow-run-as-root -np 12 python dsgd.py
     """
     dir = 'res/'
