@@ -64,7 +64,7 @@ if __name__ == "__main__":
     logMaxIter = 6
     batch = 1
     num_agent = 20
-    save_dir = './s1_res-CSGD/'
+    save_dir = './s1_res/'
     data_dir = './s1_data/'
 
     problem = QuadProblem(num_agent=num_agent, data_path = data_dir)

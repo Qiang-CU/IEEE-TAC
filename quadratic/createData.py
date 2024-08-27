@@ -55,32 +55,6 @@ class CreateData(object):
             self.Ai.append(Ai)
             self.bi.append(bi)
 
-
-        # a = np.random.randn(self.dim, self.dim)
-        # true_b = np.random.randn(self.dim,) 
-        # a = (a + a.T) / 2
-        # cov_mat = np.dot(a, a.T)
-        # epsilon = 1e-3 # make sure that cov_mat is pd
-        # true_a = cov_mat + epsilon * np.eye(self.dim) #now true_a must be pd matrix
-
-        # for _ in range(self.num_agent):
-        #     # diag_vec = np.copy(np.diagonal(true_a))
-        #     # num_special_index = 2
-        #     # special_index = rd.sample(range(self.dim), num_special_index) 
-        #     # diag_vec[special_index] = np.random.normal(loc = 0, scale = 2)
-        #     # np.fill_diagonal(true_a, diag_vec)
-
-        #     Ai = []
-        #     bi = []
-        #     for _ in range(self.num_local_data):
-        #         tempbi = true_b + np.random.randn(self.dim,) 
-        #         tempAi = true_a + np.random.randn(self.dim, self.dim) 
-                
-        #         Ai.append(tempAi)
-        #         bi.append(tempbi)
-        #     self.Ai.append(Ai)
-        #     self.bi.append(bi)
-                
         self.saveData()
 
 
@@ -93,7 +67,6 @@ class CreateData(object):
         tempAi = np.array([ A for sublist in self.Ai for A in sublist])
         tempbi = np.array( [ b for sublist in self.bi for b in sublist] )
         # Note: do not shuffle tempAi, tempbi separately, because they come from different true Ai and bi
-
         combined = list(zip(tempAi, tempbi))
         np.random.shuffle(combined)
         tempAi, tempbi = zip(*combined)
