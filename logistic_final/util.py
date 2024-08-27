@@ -108,35 +108,44 @@ class plot_figure(object):
         self.log_flag = log_flag
         self.metric = metric
 
-        self.num_trails, self.res, self.xvals = self.load_data(algo_name)
+        self.num_trails, self.res, self.xvals = self.load_data(algo_name, log_flag)
         self.z = 1.96/np.sqrt(self.num_trails) # 95% confidence， 1.645-90%
 
 
-    def load_data(self, algo_name):
+    def load_data(self, algo_name, log_flag):
         file = [f for f in os.listdir(self.dir) if algo_name in f]
         # 读取这些文件的数据
         files = [np.load(os.path.join(self.dir, f), allow_pickle=True) for f in file]
         xvals = files[0].item().get('iter')
-
         num_points = int(1e3)
+
+
         log_indices = np.logspace(0, np.log10(len(xvals) - 1), num=num_points).astype(int)
         sample_iter = np.array(xvals)[log_indices]
+        
         # sample_iter = np.array(xvals)
+        if log_flag:
+            index = np.argmax(sample_iter >= 1)
+            new_sample_iter = sample_iter[index:]
         res = []
         for f in files:
             data = np.array(f.item().get(self.metric))
-            res.append(data[log_indices])
-            # res.append(data)
+            if log_flag:
+                raw_data = data[index:]
+                res.append(raw_data[log_indices])
+            else:
+                res.append(data)
         res = np.array(res)
-        return len(file), res, sample_iter
 
-    def plot_lines(self, ax, color, line='-', label='', plot_star = False, shadow_flag=True, legend=True):
+        return len(file), res, new_sample_iter
+
+    def plot_lines(self, ax, color, line='-', label='', plot_star = True, shadow_flag=True, legend=True):
         mean = np.mean(self.res, axis = 0)
         std = np.std(self.res, axis = 0)
         lb = np.squeeze(mean - self.z * std / np.sqrt(self.num_trails))
         ub = np.squeeze(mean + self.z * std / np.sqrt(self.num_trails))
 
-        ax.plot( self.xvals[0::self.sub_sample], mean[0::self.sub_sample], label=label, color=color,linestyle=line, linewidth=2)
+        line = ax.plot( self.xvals[0::self.sub_sample], mean[0::self.sub_sample], label=label, color=color,linestyle=line, linewidth=2)
         if shadow_flag:
             ax.fill_between(self.xvals[0::self.sub_sample], lb[0::self.sub_sample], ub[0::self.sub_sample], color=color, alpha=.05)
         if legend:
@@ -149,3 +158,4 @@ class plot_figure(object):
 
         if plot_star:
             ax.plot(self.xvals[0], mean[0], marker = '*', color = color, markerfacecolor=color,ms=15)
+        return line

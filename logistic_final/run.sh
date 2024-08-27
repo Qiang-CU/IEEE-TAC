@@ -13,4 +13,10 @@ mpirun -np 5 python CSGD.py
 python DSGD_pre.py
  
 # Run DSGD
-mpirun -np 30 python DSGD.py
+mpirun -np 30 python DSGD.py # er graph and ring graph
+
+mpirun -np 30 python DSGT.py
+
+mpirun -np 30 python EDAS.py
+
+mpirun -np 30 python ExactDiff.py

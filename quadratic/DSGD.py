@@ -31,7 +31,7 @@ class DSGD(object):
         self.size = self.comm.Get_size()
         
         # 
-        self.theta = np.random.rand(self.dim)
+        self.theta = np.random.rand(self.dim, )
         self.rho = rho # rho * D_i + rho * D
         self.W = self.getW()
 
@@ -72,8 +72,8 @@ class DSGD(object):
         self.update_metric(t, mse, wmse)
     
     def stepsize(self, t):
-        a0 = 50
-        a1 = 10000
+        a0 = 10
+        a1 = 500
         return a0 / (a1 + t)
         # return 1e-3
         
@@ -116,6 +116,7 @@ if __name__ == "__main__":
     graph = 'RingGraph'
     num_agent = 20
     num_trails = 2
+    b = 1
 
 
     problem = QuadProblem(num_agent=num_agent)

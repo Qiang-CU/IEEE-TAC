@@ -116,7 +116,7 @@ class plot_figure(object):
         files = [np.load(os.path.join(self.dir, f), allow_pickle=True) for f in file]
         xvals = files[0].item().get('iter')
 
-        num_points = int(1e3)
+        num_points = int(2*1e3)
         log_indices = np.logspace(0, np.log10(len(xvals) - 1), num=num_points).astype(int)
         sample_iter = np.array(xvals)[log_indices]
         res = []

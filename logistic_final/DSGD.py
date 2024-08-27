@@ -35,7 +35,7 @@ class DSGD(object):
         self.communicator = DecentralizedAggregation(neighbour_dict)
         
         # 
-        self.theta = np.ones(self.dim + 1, ) * 0.2
+        self.theta = np.ones(self.dim + 1, ) * np.random.uniform(-0.1, 0.1)
         self.metric = {'iter': [], 'mse': [], 'wmse': []}
 
         self.theta_opt = self.load_optsol()
@@ -128,17 +128,18 @@ if __name__ == "__main__":
         mpiexec --allow-run-as-root -np 12 python dsgd.py
     """
     dir = 'res/'
-    graph = 'RingGraph' #'FullyConnectedGraph' #'RingGraph'
+    # graph = 'RingGraph' #'FullyConnectedGraph' #'RingGraph'
+    graph = 'ER_graph'
     num_agent = 30
-    num_trails = 2
+    num_trails = 3
 
     problem = LogisticMin(num_agent=num_agent, data_dir='data/')
 
 
     for rep in range(num_trails):
 
-        # hete_dsgd = DSGD(problem, algo_type='hete', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=16, data_dir = 'data/', log_scale=True)
-        # hete_dsgd.fit(rep=rep)
+        hete_dsgd = DSGD(problem, algo_type='hete', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=4, data_dir = 'data/', log_scale=True)
+        hete_dsgd.fit(rep=rep)
 
-        homo_dsgd = DSGD(problem, algo_type='homo', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=16, data_dir = 'data/', log_scale=True)
+        homo_dsgd = DSGD(problem, algo_type='homo', graph_type=graph, num_agent=num_agent, logMaxIter=5, save_dir=dir, batch=4, data_dir = 'data/', log_scale=True)
         homo_dsgd.fit(rep=rep)

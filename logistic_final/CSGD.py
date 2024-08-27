@@ -82,7 +82,7 @@ if __name__ == "__main__":
     a0, a1 = [5, 50] # [50, 1e4] #[10*1e3, 1e4], [5*1e3, 1e4] [1e3, 1e4]  #[10, 200]
 
     data_dir = 'data/'
-    batch = 16
+    batch = 4
     save_dir = 'res/'
     problem = LogisticMin(num_agent=30, data_dir = data_dir)
     csgd = CSGD(problem, num_agent=30, batch=batch, logMaxIter=5, a0=a0, a1=a1, save_dir=save_dir, log_scale=True)

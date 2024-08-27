@@ -26,7 +26,7 @@ class CSGD(object):
 
     def stepsize(self, t):
         a0 = 10
-        a1 = 200
+        a1 = 500
         return a0 / (t + a1)
         # return 1e-3
     
@@ -61,11 +61,12 @@ if __name__ == "__main__":
     """
     from quadProblem import QuadProblem
     
-    logMaxIter = 5
-    batch = 5
+    logMaxIter = 6
+    batch = 1
     num_agent = 20
-    save_dir = './res-CSGD/'
+    save_dir = './s1_res-CSGD/'
+    data_dir = './s1_data/'
 
-    problem = QuadProblem(num_agent=num_agent)
+    problem = QuadProblem(num_agent=num_agent, data_path = data_dir)
     csgd = CSGD(problem, num_agent, batch, logMaxIter, save_dir, lg_flag=True)
     csgd.fit()
