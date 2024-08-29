@@ -96,6 +96,8 @@ def creat_mixing_matrix(num_agent, graph_type, self_weight):
     else:
         print('No Graph Name Matches!')
 
+
+
 class plot_figure(object):
     def __init__(self, algo_name, dir, sub_sample=20, log_flag = False, metric = "dist2ps"):
         self.sub_sample = sub_sample
