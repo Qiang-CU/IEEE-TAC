@@ -2,6 +2,13 @@ import numpy as np
 import os 
 import random as rd
 
+def compute_spectral_gap(weighted_adj_matrix):
+    eigenvalues = np.linalg.eigvals(weighted_adj_matrix)
+    sorted_eigenvalues = np.sort(eigenvalues)[::-1]
+    # 计算谱间隙（第二小的特征值与第一小的特征值之差）
+    spectral_gap = sorted_eigenvalues[0] - sorted_eigenvalues[1]
+    return spectral_gap
+
 
 def is_psd(A):
     eigenvalues, _ = np.linalg.eig(A)
@@ -78,7 +85,57 @@ class CreateData(object):
         np.save(self.save_dir + f'/TotalAgent{self.num_agent}-AllData.npy', alldata)
 
 
+def create_mixing_matrix_star_graph(num_agent):
+    adj_matrix = np.zeros((num_agent, num_agent), dtype=int)
+    for i in range(1, num_agent):
+        adj_matrix[0, i] = 1
+        adj_matrix[i, 0] = 1
+
+    W = np.zeros((num_agent, num_agent)) #mixing matrix
+    degree = np.sum(adj_matrix, axis=0) + 1
+    for i in range(num_agent):
+        for j in range(num_agent):
+            if adj_matrix[i, j] == 1 and i != j:
+                W[i, j] = min(1/degree[i], 1/degree[j])
+    for i in range(num_agent):
+        W[i, i] = 1 - np.sum(W[i, :])
+    return W
+
+
+def is_doubly_stochastic(matrix):
+    matrix = np.array(matrix)
+    if np.any(matrix < 0):
+        return False
+    row_sums = np.sum(matrix, axis=1)
+    col_sums = np.sum(matrix, axis=0)
+    return np.allclose(row_sums, 1) and np.allclose(col_sums, 1)
+
+
 if __name__ == "__main__":
-    save_dir = 's1_data/'
-    data = CreateData(dim = 10, num_agent=20, num_local_data=500, save_dir=save_dir)
-    data.generateData()
+    save_dir = 's2_data/'
+    num_agent_list = list(range(5, 55, 5))
+
+    for num_agent in num_agent_list:
+        # 创建对应的子文件夹
+        folder_path = f's2_data/NumAgent{num_agent}'
+        save_path = f's2_res/NumAgent{num_agent}'
+        os.makedirs(folder_path, exist_ok=True)
+        os.makedirs(save_path, exist_ok=True)
+
+        data = CreateData(dim = 10, num_agent=num_agent, num_local_data=300, save_dir=folder_path)
+        data.generateData()
+
+        W = create_mixing_matrix_star_graph(num_agent)
+        if not is_doubly_stochastic(W):
+            raise ValueError("W is not doubly stochastic")
+
+        spectral_gap = compute_spectral_gap(W)
+        if spectral_gap.imag != 0:
+            ValueError("Spectral gap is not real")
+        else:
+            spectral_gap = spectral_gap.real
+
+        print(f'{num_agent}-agent Star Graph, spectral gap is: {spectral_gap}' )
+
+        filename = f's2_mixMat/MixingMat-StarGraph-NumAgent{num_agent}.npy'
+        np.save(filename, W)

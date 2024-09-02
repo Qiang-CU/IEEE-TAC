@@ -6,7 +6,7 @@ from util import create_sampling_time
 
 class CSGD(object):
 
-    def __init__(self, problem, num_agent, batch, logMaxIter, save_dir, lg_flag=True):
+    def __init__(self, problem, num_agent, batch, logMaxIter, save_dir, lg_flag=True, a0=10, a1=500):
         self.problem = problem
         self.dim = problem.dim
         self.num_agent = num_agent
@@ -21,14 +21,14 @@ class CSGD(object):
         self.rank = self.comm.Get_rank()
         self.size = self.comm.Get_size()
 
+        self.a0 = a0
+        self.a1 = a1
+
         self.metric = {'iter': [], 'mse': [], 'wmse': []}
         self.theta = np.random.rand(self.dim)
 
     def stepsize(self, t):
-        a0 = 10
-        a1 = 500
-        return a0 / (t + a1)
-        # return 1e-3
+        return self.a0 / (t + self.a1)
     
     def record(self, t):
         self.metric['iter'].append(t)
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     """
     from quadProblem import QuadProblem
     
-    logMaxIter = 6
+    logMaxIter = 4
     batch = 1
     num_agent = 20
     save_dir = './s1_res/'

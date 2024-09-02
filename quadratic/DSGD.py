@@ -11,7 +11,7 @@ from util import creat_mixing_matrix, create_sampling_time, compute_spectral_gap
 
 class DSGD(object):
     
-    def __init__(self, problem, algo_type, graph_type, num_agent, logMaxIter, data_dir, save_dir, rho=0, lg_flag=True, batch=1):
+    def __init__(self, problem, algo_type, graph_type, num_agent, logMaxIter, data_dir, save_dir, rho=0, lg_flag=True, batch=1, a0=10, a1=500):
         self.problem = problem
         self.dim = problem.dim
         self.sample_time = create_sampling_time(logMaxIter, log_scale=lg_flag)
@@ -35,22 +35,24 @@ class DSGD(object):
         self.rho = rho # rho * D_i + rho * D
         self.W = self.getW()
 
+        #
+        self.a0 = a0
+        self.a1 = a1
+
         neighbour_dict = self.neighbour_weights()
         self.communicator = DecentralizedAggregation(neighbour_dict)
         self.metric = {'iter': [], 'mse': [], 'wmse': []}
     
     def getW(self):
-        file_name = self.data_dir + f'MixingMat-{self.graph}-NumAgent{self.num_agent}.npy'
-        if os.path.exists(file_name):
-            # 路径下有，那就导入
-            W = np.load(file_name)
-            return W
-        else:
-            # 路径下没有mixing matrix文件,那就创建一个
-            W = creat_mixing_matrix(num_agent, graph, self_weight=0.3)
-            np.save('./s1_data/' + f'MixingMat-{graph}-NumAgent{num_agent}.npy', W)
-            print(f"File '{file_name}' does not exist, but created now")
-            return W
+        file_name = self.data_dir
+        W = np.array(np.load(file_name, allow_pickle=True))
+        return W
+        # else:
+        #     # 路径下没有mixing matrix文件,那就创建一个
+        #     W = creat_mixing_matrix(num_agent, graph, self_weight=0.3)
+        #     np.save('./s1_data/' + f'MixingMat-{graph}-NumAgent{num_agent}.npy', W)
+        #     print(f"File '{file_name}' does not exist, but created now")
+        #     return W
     
     def update_metric(self, t, mse, wmse):
         self.metric['iter'].append(t)
@@ -76,9 +78,7 @@ class DSGD(object):
         self.update_metric(t, mse, wmse)
     
     def stepsize(self, t):
-        a0 = 10
-        a1 = 500
-        return a0 / (a1 + t)
+        return self.a0 / (self.a1 + t)
         
     def save(self, rep):        
         if self.algo_type == 'homo':
@@ -108,31 +108,3 @@ class DSGD(object):
         if self.rank == self.root_rank:
             self.save(rep)
 
-
-if __name__ == "__main__":
-    """
-        mpirun -np 20 python dsgd.py
-        mpiexec --allow-run-as-root -np 12 python dsgd.py
-    """
-    rho_list = [0.1, 0.3, 0.7]
-    dir = './s1_res/'
-    graph = 'RingGraph'
-    data_dir = 's1_data/'
-    num_agent = 20
-    num_trails = 2
-    b = 1
-    lg = 6
-
-
-    problem = QuadProblem(num_agent=num_agent, data_path= data_dir)
-
-    for rep in range(num_trails):
-        for rho in rho_list:
-            hybrid_dsgd = DSGD(problem, algo_type='hybrid', graph_type=graph, num_agent=num_agent, logMaxIter=lg, save_dir=dir, batch=b, rho = rho, data_dir = data_dir)
-            hybrid_dsgd.fit(rep=rep)
-
-        hete_dsgd = DSGD(problem, algo_type='hete', graph_type=graph, num_agent=num_agent, logMaxIter=lg, save_dir=dir, batch=b, data_dir=data_dir)
-        hete_dsgd.fit(rep=rep)
-
-        homo_dsgd = DSGD(problem, algo_type='homo', graph_type=graph, num_agent=num_agent, logMaxIter=lg, save_dir=dir, batch=b, data_dir=data_dir)
-        homo_dsgd.fit(rep=rep)

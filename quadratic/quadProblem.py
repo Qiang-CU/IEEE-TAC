@@ -27,7 +27,7 @@ class QuadProblem(object):
         raw_data = np.load(self.data_path + f'TotalAgent{self.num_agent}-agent{self.rank}.npy', allow_pickle=True).item()
         local_data['Ai'] = np.array(raw_data['Ai'])
         local_data['bi'] = np.array(raw_data['bi'])
-
+ 
         return local_data, all_data
 
     def get_opt_sol(self): # 小心不要算错了，否则会出现先下降后持平的问题
