@@ -138,6 +138,9 @@ class plot_figure(object):
         if self.log_flag:
             ax.set_xscale('log')
             ax.set_yscale('log')
+        else:
+            ax.set_xscale('linear')
+            ax.set_yscale('log')
         ax.grid()
         ax.tick_params(axis='both', which='major', labelsize=13)
 
