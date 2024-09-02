@@ -139,13 +139,13 @@ class plot_figure(object):
 
         return len(file), res, new_sample_iter
 
-    def plot_lines(self, ax, color, line='-', label='', plot_star = True, shadow_flag=True, legend=True):
+    def plot_lines(self, ax, color, line='-', label='', plot_star = True, shadow_flag=True, legend=True, linewidth=2):
         mean = np.mean(self.res, axis = 0)
         std = np.std(self.res, axis = 0)
         lb = np.squeeze(mean - self.z * std / np.sqrt(self.num_trails))
         ub = np.squeeze(mean + self.z * std / np.sqrt(self.num_trails))
 
-        line = ax.plot( self.xvals[0::self.sub_sample], mean[0::self.sub_sample], label=label, color=color,linestyle=line, linewidth=2)
+        line = ax.plot( self.xvals[0::self.sub_sample], mean[0::self.sub_sample], label=label, color=color,linestyle=line, linewidth=linewidth)
         if shadow_flag:
             ax.fill_between(self.xvals[0::self.sub_sample], lb[0::self.sub_sample], ub[0::self.sub_sample], color=color, alpha=.05)
         if legend:
