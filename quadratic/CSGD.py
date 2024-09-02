@@ -25,7 +25,7 @@ class CSGD(object):
         self.a1 = a1
 
         self.metric = {'iter': [], 'mse': [], 'wmse': []}
-        self.theta = np.random.rand(self.dim)
+        self.theta = np.random.rand(self.dim, )
 
     def stepsize(self, t):
         return self.a0 / (t + self.a1)
