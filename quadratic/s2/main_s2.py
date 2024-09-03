@@ -14,16 +14,15 @@ from quadProblem import QuadProblem
 
 
 num_agent = int(sys.argv[1]) # Note: input's type is str, you need to change the type
-logMaxIter = 2
+logMaxIter = 6
 batch = 1
 save_dir = f's2_res/NumAgent{num_agent}/'
 data_dir = f's2_data/NumAgent{num_agent}/'
 graph = 'RingGraph' #'StarGraph'
 mixmat_dir = f's2_mixMat/MixingMat-{graph}-NumAgent{num_agent}.npy'
-num_trails = 1
+num_trails = 3
 
 problem = QuadProblem(num_agent=num_agent, data_path=data_dir)
-
 
 csgd = CSGD(problem, num_agent, batch, logMaxIter, save_dir, lg_flag=False, a0=10, a1=500)
 csgd.fit()
