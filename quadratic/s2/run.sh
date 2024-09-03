@@ -1,6 +1,11 @@
 #!/bin/bash
 
-# 使用 for 循环遍历参数列表
+# Step 1: prepare data, mixing matrix and folder
+# python preliminary.py
+
+
+# Step 2: run the main script in the for loop
+
 for param in 5 10 15 20 25 30 35 40 45 50
 do
     echo "Processing parameter: $param"
