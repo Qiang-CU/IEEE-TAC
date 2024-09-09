@@ -1,5 +1,4 @@
 import numpy as np 
-import time
 
 class GradientDescent(object):
     def __init__(self, problem, save_flag = False, theta_init=None):

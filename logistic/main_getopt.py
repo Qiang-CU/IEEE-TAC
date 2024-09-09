@@ -2,8 +2,6 @@ import numpy as np
 from logistic import LogisticMin
 from gd import GradientDescent
 
-
-
 num_agent = 30
 data_dir = './data'
 

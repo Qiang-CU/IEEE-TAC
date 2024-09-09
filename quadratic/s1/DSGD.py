@@ -30,7 +30,6 @@ class DSGD(object):
         self.rank = self.comm.Get_rank()
         self.size = self.comm.Get_size()
         
-        # 
         self.theta = np.random.rand(self.dim, )
         self.rho = rho # rho * D_i + rho * D
         self.W = self.getW()

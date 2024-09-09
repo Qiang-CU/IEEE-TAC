@@ -7,7 +7,7 @@ def create_sampling_time(logMaxIter, log_scale=True):
     """生成对数刻度或者正常刻度，sample_num记录metric运行的时间点"""
     maxIter = int(10**logMaxIter)
     num_points = int(min(5000, int(maxIter*0.2)))
-    
+
     if log_scale:
         sample_num = np.geomspace(1, 10**logMaxIter, num_points, endpoint=False, dtype=int)
         return np.insert(np.unique(sample_num), 0, 0)
@@ -99,7 +99,6 @@ def creat_mixing_matrix(num_agent, graph_type, self_weight):
         print('No Graph Name Matches!')
 
 
-
 class plot_figure(object):
     def __init__(self, algo_name, dir, sub_sample=20, log_flag = False, metric = "dist2ps"):
         self.sub_sample = sub_sample
@@ -107,7 +106,6 @@ class plot_figure(object):
         self.algo_name = algo_name
         self.log_flag = log_flag
         self.metric = metric
-
         self.num_trails, self.res, self.xvals = self.load_data(algo_name, log_flag)
         self.z = 1.96/np.sqrt(self.num_trails) # 95% confidence， 1.645-90%
 
@@ -118,12 +116,9 @@ class plot_figure(object):
         files = [np.load(os.path.join(self.dir, f), allow_pickle=True) for f in file]
         xvals = files[0].item().get('iter')
         num_points = int(1e3)
-
-
         log_indices = np.logspace(0, np.log10(len(xvals) - 1), num=num_points).astype(int)
         sample_iter = np.array(xvals)[log_indices]
         
-        # sample_iter = np.array(xvals)
         if log_flag:
             index = np.argmax(sample_iter >= 1)
             new_sample_iter = sample_iter[index:]

@@ -143,8 +143,8 @@ if __name__ == "__main__":
     num_agent = 30
     num_trails = 3
 
+    
     problem = LogisticMin(num_agent=num_agent, data_dir='data/')
-
 
     for rep in range(num_trails):
 

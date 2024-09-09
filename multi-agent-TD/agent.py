@@ -115,4 +115,3 @@ if __name__ == "__main__":
         print("Next state:", next_state)
         print("Selected action in next state:", action)
         print("Parameter prm:", agent.prm)
-        print()

@@ -47,7 +47,6 @@ def get_optprm(mu, trans_mat, reward, env, agent):
             tmp += agent.feature[next_s] * trans_mat[s][next_s]
         lhs += mu[s] * np.outer(agent.feature[s], (agent.feature[s] - agent.discount_factor * tmp))
         
-    
     rhs = 0
     for s in range(env.num_states):
         rhs += mu[s] * agent.feature[s] * reward[s]

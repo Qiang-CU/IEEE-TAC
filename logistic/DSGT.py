@@ -36,8 +36,8 @@ class DSGT(object):
         
         # 
         self.theta = np.ones(self.dim + 1, ) * np.random.uniform(-0.1, 0.1)
-        self.tracking_y = np.zeros(self.dim + 1, )   # tracking variabel y
-        self.last_grd = np.zeros(self.dim + 1, )   # last gradient
+        self.tracking_y = None  # tracking variabel y
+        self.last_grd = None   # last gradient
 
         self.metric = {'iter': [], 'mse': [], 'wmse': []}
 
@@ -107,6 +107,11 @@ class DSGT(object):
     
     def fit(self, rep):
         
+        # initialize tracking variable and last gradient
+        X, Y = self.sample()
+        self.last_grd = self.problem.stoc_grad(X, Y, self.theta)
+        self.tracking_y = np.copy(self.last_grd)
+
         for t in range(self.maxIter):
 
             temp = self.theta - self.stepsize(t) * self.tracking_y

@@ -19,7 +19,6 @@ class GridWorld(object):
         self.num_states = self.num_col * self.num_row
         self.num_actions = 4
         self.states = np.arange(self.num_states)
-
         self.cur_state = 0 #初始状态设置为0
 
     
