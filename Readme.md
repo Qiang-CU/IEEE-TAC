@@ -24,3 +24,5 @@ The repository is organized as follows:
 
 The code requires the following Python packages:
 - `numpy`, `scipy`, `matploblib`, `networkx`, `mpi4py`
+
+If you find this repository helpful, don't hesitate to give me a star ⭐! Sending love 💖💖!
