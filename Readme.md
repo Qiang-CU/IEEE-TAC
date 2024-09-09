@@ -1,6 +1,8 @@
 ## Overview
 
-This repository contains the code for numerical experiments related to my subbmitted paper. The experiments focus on decentralized stochastic gradient descent (DSGD) and illustrate the theoretical findings on the effect of data homogeneity on the convergence of the algorithm.
+This repository contains the code for numerical experiments related to my paper ``Tighter Analysis for Decentralized Stochastic Gradient Method: Impact of Data Homogeneity" [Arxiv link](https://arxiv.org/abs/2409.04092). 
+
+The experiments focus on decentralized stochastic gradient descent (DSGD) and illustrate the theoretical findings on the effect of data homogeneity on the convergence of the algorithm.
 
 ## Structure
 
