@@ -29,26 +29,9 @@ The code requires the following Python packages:
 
 Please consider citing out paper if you use our code:
 
-
-<script>
-function copyToClipboard() {
-    var text = `@misc{li2024tighteranalysisdecentralizedstochastic,
-      title={Tighter Analysis for Decentralized Stochastic Gradient Method: Impact of Data Homogeneity}, 
-      author={Qiang Li and Hoi-To Wai},
-      year={2024},
-      eprint={2409.04092},
-      archivePrefix={arXiv},
-      primaryClass={math.OC},
-      url={https://arxiv.org/abs/2409.04092}, 
-    }`;
-    navigator.clipboard.writeText(text);
-    alert("Copied citation to clipboard!");
-}
-</script>
-
 <div style="position: relative;">
     <pre>
-@misc{li2024tighteranalysisdecentralizedstochastic,
+      @misc{li2024tighter,
       title={Tighter Analysis for Decentralized Stochastic Gradient Method: Impact of Data Homogeneity}, 
       author={Qiang Li and Hoi-To Wai},
       year={2024},
@@ -60,7 +43,5 @@ function copyToClipboard() {
     </pre>
     <button style="position: absolute; top: 10px; right: 10px;" onclick="copyToClipboard()">Copy</button>
 </div>
-
-
 
 If you find this repository helpful, don't hesitate to give me a star ⭐! Sending love 💖💖!
