@@ -31,7 +31,7 @@ Please consider citing out paper if you use our code:
 
 <div style="position: relative;">
     <pre>
-      @misc{li2024tighter,
+@misc{li2024tighter,
       title={Tighter Analysis for Decentralized Stochastic Gradient Method: Impact of Data Homogeneity}, 
       author={Qiang Li and Hoi-To Wai},
       year={2024},
