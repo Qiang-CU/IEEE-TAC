@@ -29,13 +29,13 @@ The code requires the following Python packages:
 
 Please consider citing out paper if you use our code:
 > @misc{li2024tighteranalysisdecentralizedstochastic,
-      title={Tighter Analysis for Decentralized Stochastic Gradient Method: Impact of Data Homogeneity}, 
-      author={Qiang Li and Hoi-To Wai},
-      year={2024},
-      eprint={2409.04092},
-      archivePrefix={arXiv},
-      primaryClass={math.OC},
-      url={https://arxiv.org/abs/2409.04092}, 
+>     title={Tighter Analysis for Decentralized Stochastic Gradient Method: Impact of Data Homogeneity},
+>     author={Qiang Li and Hoi-To Wai},
+>     year={2024},
+>     eprint={2409.04092},
+>     archivePrefix={arXiv},
+>     primaryClass={math.OC},
+>    url={https://arxiv.org/abs/2409.04092}, 
 
 
 If you find this repository helpful, don't hesitate to give me a star ⭐! Sending love 💖💖!
